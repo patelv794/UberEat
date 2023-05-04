@@ -1,9 +1,12 @@
 
 import csv
 import json
-
 import requests
 
+url = "https://www.ubereats.com/store/brooklyn-grocery-store-80-dekalb-ave/l5_jK22xWsOzuEmvRt3vVw/979fe32b-6db1-5ac3-b3b8-49af46ddef57/a660c916-2ecd-475d-9d81-945a2bfdadc8?diningMode=DELIVERY&ps=1&scats=a660c916-2ecd-475d-9d81-945a2bfdadc8&scatsubs="
+href_url = url.split('/')
+store_id = href_url[-2]
+category_uuuid = href_url[-1].split('?')[0]
 
 headers = {
     'Host': 'www.ubereats.com',
@@ -21,7 +24,7 @@ headers = {
 all_category_name_With_UUID = {}
 
 json_data_category = {
-    'storeUuid': '979fe32b-6db1-5ac3-b3b8-49af46ddef57',
+    'storeUuid': f'{store_id}',
     'sfNuggetCount': 50,
     'cbType': 'EATER_ENDORSED',
 }
@@ -48,10 +51,10 @@ count_item = 0
 sub_category = {}
 while stop_data:
 
-    category_id = ["a660c916-2ecd-475d-9d81-945a2bfdadc8"]
+    category_id = [f"{category_uuuid}"]
     json_data = {
         'storeFilters': {
-            'storeUuid': '979fe32b-6db1-5ac3-b3b8-49af46ddef57',
+            'storeUuid': f'{store_id}',
             'sectionUuids': category_id,
             'subsectionUuids': None,
         },
