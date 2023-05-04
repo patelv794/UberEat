@@ -40,7 +40,7 @@ raw_data = data['data']['catalogSectionsMap']['979fe32b-6db1-5ac3-b3b8-49af46dde
 for all_raw_data in raw_data:
     catalogSectionUUID = all_raw_data['catalogSectionUUID']
     category_name = all_raw_data['payload']['standardItemsPayload']['title']['text']
-    print(category_name)
+    # print(category_name)
     all_category_name_With_UUID[catalogSectionUUID] = category_name
 
 
@@ -81,6 +81,7 @@ while stop_data:
 
     for dat in data['data']['catalog'][0]['payload']['standardItemsPayload']['catalogItems']:
         all_data = dat
+        item_uuid = all_data['uuid']
         category_uuids = all_data['sectionUuid']
         Main_category_name = all_category_name_With_UUID.get(category_uuids)
         subCategory_uuid = all_data['subsectionUuid']
@@ -92,6 +93,43 @@ while stop_data:
         item_sub_category = all_data['sectionUuid']
         count_item +=1
         print(f"{count_item} > {Main_category_name} > {subcategory_name} > {item_name} > {item_price}")
+        if item_price == 0:
+            json_datamodiyer_data = {
+                'itemRequestType': 'ITEM',
+                'storeUuid': f'{store_id}',
+                'sectionUuid': category_uuids,
+                'subsectionUuid': subCategory_uuid,
+                'menuItemUuid': item_uuid,
+                'diningMode': 'DELIVERY',
+                'cbType': 'EATER_ENDORSED',
+            }
+
+            response_modifyer = requests.post(
+                'https://www.ubereats.com/_p/api/getMenuItemV1',
+                headers=headers,
+                json=json_datamodiyer_data,
+            )
+            modifyer_data = json.loads(response_modifyer.text)
+            try:
+
+                modi_item_name = modifyer_data['data']['title']
+                for modi_item in modifyer_data['data']['customizationsList'][0]['options']:
+                    modi_option_name = modi_item['title']
+                    modi_item_price = modi_item['price']
+                    item_option_combo_name = f"{modi_item_name} - {modi_option_name}"
+                    save_in_csv = [Main_category_name, subcategory_name, item_option_combo_name, modi_item_price, item_img]
+                    with open(f'ADD_InGroceryUberEat.csv', 'a', newline='') as csvFile:
+                        writer = csv.writer(csvFile)
+                        writer.writerow(save_in_csv)
+                        csvFile.close()
+            except:
+                pass
+        else:
+            save_in_csv = [Main_category_name, subcategory_name, item_name, item_price, item_img]
+            with open(f'ADD_InGroceryUberEat.csv', 'a', newline='') as csvFile:
+                writer = csv.writer(csvFile)
+                writer.writerow(save_in_csv)
+                csvFile.close()
 
     if data['data']['pagingInfo']['hasMore'] == True:
         # print(data['data']['pagingInfo']['offset'])
@@ -99,14 +137,7 @@ while stop_data:
     elif data['data']['pagingInfo']['hasMore'] == False:
         stop_data = False
 
-#
-#         save_in_csv = [category_name,items_name,item_price,item_description,item_img]
-#         print(items_name)
-#         # with open(f'Fort Green Irish & British11111.csv', 'a', newline='') as csvFile:
-#         #     writer = csv.writer(csvFile)
-#         #     writer.writerow(save_in_csv)
-#         #     csvFile.close()
+
 
 # for i in data['data']['catalog']:
 #     print(i)
-
