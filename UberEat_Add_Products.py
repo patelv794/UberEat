@@ -4,17 +4,17 @@ import csv
 import uuid
 
 
-with open("C:/Users/Admin/PycharmProjects/Beer Inventory - 2022/Only_brand.csv", "r") as csv_file:
+with open("C:/Users/quick/PycharmProjects/GUI_App/ADD_InGroceryUberEat.csv", "r") as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
     for lin in csv_reader:
         item_uuid = uuid.uuid4()
         # only to create modifyer ids = lin[7]
-        # category_uuid = lin[3]
-        item_name = lin[2]
-        img_url = lin[4]
-        descriptions = lin[5]
-        product_price = lin[6]
-        alcholo_yes_no = 1
+        Category_ids = lin[2]
+        item_name = lin[3]
+        product_price = lin[4]
+        img_url = lin[5]
+        descriptions = ''
+        alcholo_yes_no = 0
         print(lin)
 
         if not img_url == 'None':
@@ -36,14 +36,14 @@ with open("C:/Users/Admin/PycharmProjects/Beer Inventory - 2022/Only_brand.csv",
         # Fort Green Food Market
         store_UUID = '1a5ede99-3c38-5f9a-983f-2dc8c51988bb'
         Item_UUID = item_uuid
-        Category_ids = '899e1ad6-08ef-424f-b1d8-5babd878f3df'
+        # Category_ids = '899e1ad6-08ef-424f-b1d8-5babd878f3df'
         product_names = item_name.title()
 
         cookies = {
             # Optional
-            'session_id': '{"session_id":"3b824cbc-5218-4000-a562-44e8633a2932","session_time_ms":1652052276972}',
-            # Important
-            'sid': 'QA.CAESEOnsiLgGeEKUraJFaVP0gXMY2J_woQYiATEqJGQwNGIwNjNkLTJlMmYtNDgyMS1hMjljLTAwZDMyYTU1M2QzMTJAjRR6rL8q2QHxJ8qVxrYHldvt1AyptoVNyqSrywdKkhEbrD1DhctH3rXc0ZpdegOCLcVIcYMppBskTk2816qKNzoBMUINLnViZXJlYXRzLmNvbQ.MOlYc8x0Qh1AuigtX8cdbRpjkbtU0rLEBOg7UbcW6QA',
+            'session_id': '{"session_id":"abe01201-18cd-426b-af8b-43a6b369c6b5","session_time_ms":1682541826154}',
+            # Importan
+            'sid': 'QA.CAESEAoGL4KyBkWAlG2dkBdCVR8Ync_uowYiATEqJGQwNGIwNjNkLTJlMmYtNDgyMS1hMjljLTAwZDMyYTU1M2QzMTJAMV5kjWlYe7Pocp7xNMadyVJVLAcu_-ejK-3TRlJNKU5AoNP8NbmuLtoQ0v1xRKVGS9L-DjI1XdWPWm1yvwipgToBMUINLnViZXJlYXRzLmNvbQ.nUByM-48QZmnQDYpoh6i1_1Kny8TF4uTiFWQqMMfXsA',
             'selectedRestaurant': f'{store_UUID}',
         }
 
@@ -132,7 +132,7 @@ with open("C:/Users/Admin/PycharmProjects/Beer Inventory - 2022/Only_brand.csv",
                                 'mealTypeUUID': None,
                                 'proteinTypeUUID': None,
                                 'dietaryLabels': None,
-                                'uberProductType': 'CANDY_COOKIES_AND_CHOCOLATE',
+                                'uberProductType': 'GRAINS_RICE_AND_LEGUMES',
                                 'uberProductTraits': [],
                             },
                             'nutritionalInfo': {
@@ -265,7 +265,7 @@ with open("C:/Users/Admin/PycharmProjects/Beer Inventory - 2022/Only_brand.csv",
                                 'mealTypeUUID': None,
                                 'proteinTypeUUID': None,
                                 'dietaryLabels': None,
-                                'uberProductType': 'CANDY_COOKIES_AND_CHOCOLATE',
+                                'uberProductType': 'GRAINS_RICE_AND_LEGUMES',
                                 'uberProductTraits': [],
                             },
                             'nutritionalInfo': {
@@ -375,7 +375,7 @@ with open("C:/Users/Admin/PycharmProjects/Beer Inventory - 2022/Only_brand.csv",
                             'pricingPolicy': None,
                         },
                     },
-
+                    'validate': None,
                     'menuType': 'MENU_TYPE_FULFILLMENT_PICK_UP',
                     'parentObjectUUIDs': [
                         f'{Category_ids}',
@@ -459,4 +459,4 @@ with open("C:/Users/Admin/PycharmProjects/Beer Inventory - 2022/Only_brand.csv",
 
         )
         print(response.status_code)
-
+        print(item_name)
